@@ -3,12 +3,25 @@ from data import Articles
 from mysql import Mysql
 import config
 import pymysql
-
+from datetime import timedelta
+from functools import wraps
 app = Flask(__name__)
 mysql = Mysql(password=config.PASSWORD)
-app.secret_key = 'eungok'
+# app.secret_key = 'eungok'
+# app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
+
+def is_logged_in(func):
+    @wraps(func)
+    def wrap(*args, **kwargs):
+        if 'is_logged_in' in session:
+            return func(*args, **kwargs)
+        else:
+            return redirect('/login')
+    return wrap
+
 
 @app.route('/', methods=['GET', 'POST'])
+@is_logged_in
 def index():
 #     if request.method == "GET":
 #         os_info = dict(request.headers)
@@ -24,6 +37,7 @@ def index():
 #         data2 = request.form["age"]
 #         print(data)
 #         return render_template('index.html', header="hello")
+        # print(session['is_logged_in'])
         return render_template('index.html')
 
 @app.route('/hello', methods=['GET', 'POST'])
@@ -91,12 +105,27 @@ def login():
                 session['is_logged_in'] = True
                 session['username'] = rows[0][1]
                 return redirect('/')
+                # return render_template('index.html', is_logged_in = session['is_logged_in'], username = session['username'])
             else:
                 return redirect('/login')
         else:
             return render_template('login.html')
-        
+
+@app.route('/logout')       
+def logout():
+    session.clear()
+    return redirect('/')
+
+@app.route('/edit/<ids>')
+def edit(ids):
+    return ids
+
+@app.route('/delete/<ids>')
+def delete(ids):
+    return ids
+
 
 if __name__ == '__main__':
+    app.config['SECRET_KEY'] = 'eungok'
     app.run(debug = True)
 
