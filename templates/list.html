@@ -4,8 +4,62 @@
 {% endblock %}
 {% block body %}
     <div class="container" style="margin-top: 2rem">
-        <h1>List</h1>
-        <table border="1" align = 'center'>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Article</h1>
+    <p class="mb-4">This data is important.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div style="display:flex; justify-content:space-between;">
+                <h6 class="m-0 font-weight-bold text-primary">Articles</h6><div><a href="/create_list"><button type="button" class="btn btn-info">글쓰기</button></a></div>
+            </div>
+            
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Author</th>
+                            <th>Creat date</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                
+                    <tbody>
+                        {% for x in data %}
+                        </tr>
+                        <td>{{ x[0] }}</td>
+                            <td>{{ x[1] }}</td>
+                            <td>{{ x[2] }}</td>
+                            <td>{{ x[3] }}</td>
+                            <td>{{ x[4] }}</td>
+                            <td><a href="/edit/{{ x[0] }}"><button class="btn bg-primary">편집</button></a></td>
+                            <td><a href="/delete/{{ x[0] }}"><button class="btn bg-danger" onclick="return confirm_func()">삭제</button></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+
+
+
+        
+        <!-- <table border="1" align = 'center'>
             {% for x in data %}
             <thead>
                 <tr>
@@ -29,8 +83,8 @@
                 <td><a href="/delete/{{x['id']}}"><button class="btn btn-danger" onclick="return confirm_func()" >삭제</button></a></td>
             </tr>
         </tbody>
-        {% endfor %}
-        </table>
+        {% endfor %} -->
+        <!-- </table> -->
             <!-- {% for x in data %}
             <div style="margin-bottom: 40px;">
                 <tr>ID: {{x['id']}}</tr>
